@@ -100,8 +100,8 @@ var saveAs=saveAs||navigator.msSaveBlob&&navigator.msSaveBlob.bind(navigator)||f
 		<div id="init-lacking">Your browser lacks required capabilities. Please upgrade it or switch to another to continue.</div>
 		<div id="init-loading"><div>Loading&hellip;</div></div>
 	</div>
-	<tw-storydata name="wardrobe" startnode="1" creator="Twine" creator-version="2.3.7" ifid="CF9E8DB4-18F7-4C30-A32B-0EF7051AC03A" zoom="1" format="SugarCube" format-version="2.31.1" options="" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css"></style><script role="script" id="twine-user-script" type="text/twine-javascript">
-importScripts("https://cdn.jsdelivr.net/gh/antoniohidalgolanda/sc_wardrobe/sc_wardrobe.min.js")
+	<tw-storydata name="wardrobe" startnode="1" creator="Twine" creator-version="2.3.7" ifid="CF9E8DB4-18F7-4C30-A32B-0EF7051AC03A" zoom="1" format="SugarCube" format-version="2.31.1" options="" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css"></style><script role="script" id="twine-user-script" type="text/twine-javascript">// https://cdn.jsdelivr.net/gh/antoniohidalgolanda/sc_wardrobe/sc_wardrobe.min.js
+importScripts("https://cdn.jsdelivr.net/gh/antoniohidalgolanda/sc_wardrobe/sc_wardrobe.js")
 	.then(function () {
 		setup.wardrobe = sc_wardrobe;
 		// Code that depends on the script goes here.
@@ -196,9 +196,9 @@ Model parameters
 */\
 !!! Clothes:
 &lt;&lt;if def $account &amp;&amp; def $account.dressing&gt;&gt;\
-	&lt;&lt;for _item range $account.dressing.get_clothes()&gt;&gt;
-	&lt;&lt;capture _item&gt;&gt;\
-      &lt;&lt;= _item.get_name()&gt;&gt;
+	&lt;&lt;for _it range $account.dressing.get_clothes()&gt;&gt;
+	&lt;&lt;capture _it&gt;&gt;\
+      &lt;&lt;= _it.get_name()&gt;&gt;
 	&lt;&lt;/capture&gt;&gt;\
 	&lt;&lt;/for&gt;&gt;\
 &lt;&lt;/if&gt;&gt;\
@@ -278,14 +278,14 @@ $cheat
 - Return to [[wardrobe]]
 ---
 &lt;&lt;if def $item_name&gt;&gt;\
-	&lt;&lt;set _item = setup.wardrobe.prototypes.clothes[$item_name].clone()&gt;&gt;
+	&lt;&lt;set _item = setup.wardrobe.prototypes.clothes[$item_name].prototype_clone()&gt;&gt;\
 	&lt;&lt;set _item.name = $colour + &quot; &quot; + $item_name&gt;&gt;\
 	&lt;&lt;set $account.wardrobe.store(_item)&gt;&gt;\
 	&lt;&lt;forget $item&gt;&gt;\
 	&lt;&lt;forget $item_name&gt;&gt;\
 &lt;&lt;/if&gt;&gt;\
 &lt;&lt;set _colours = [&quot;denim&quot;, &quot;red&quot;, &quot;blue&quot;, &quot;green&quot;,&quot;yellow&quot;, &quot;white&quot;, &quot;black&quot;, &quot;orange&quot;, &quot;purple&quot;, &quot;pink&quot;, &quot;salmon&quot;, &quot;burdeos&quot;, &quot;veige&quot;, &quot;chocolate&quot;, &quot;coffee&quot;, &quot;tobacco&quot;, &quot;cyan&quot;, &quot;turquoise&quot;, &quot;olive&quot;, &quot;gray&quot;, &quot;navy&quot;]&gt;&gt;\
-&lt;&lt;set $colour = either (_colours)&gt;&gt;\
+&lt;&lt;set $colour = either (_colours)&gt;&gt;
 !!!!Colours
 &lt;&lt;for _colour range _colours&gt;&gt;\
 &lt;&lt;capture _colour&gt;&gt;\
