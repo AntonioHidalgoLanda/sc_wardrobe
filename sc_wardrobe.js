@@ -1,4 +1,4 @@
-var sc_wardrobe = {}
+var sc_wardrobe = {};
 sc_wardrobe.BODY_AREAS = ["feet","legs","bottom","chest","neck","head"];
 sc_wardrobe.WEARING_LAYER = {"underwear":1 ,"wear":2, "coat":3};
 sc_wardrobe.LAUDRY_FREQUENCIES = { "delicate":14, "iron":7, "no_iron":2};
@@ -103,7 +103,7 @@ class Clothes {
 		this.laundry_frequence = laundry_frequence;
 		this.id = "" + new Date().getTime() + this.size + this.body_area + this.wearing_layer + this.laundry_frequence;
   }
-	clone() {
+	prototype_clone() {
 		return new Clothes(
 			this.name,
 			this.size,
