@@ -376,3 +376,26 @@ for (const iwl in sc_wardrobe.WEARING_LAYER) {
 			}
 		}	
 }
+
+sc_wardrobe.export_prototypes = function () {
+    var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(sc_wardrobe.prototypes.clothes));
+    var downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href",     dataStr);
+    downloadAnchorNode.setAttribute("download", "collection" + ".json");
+    document.body.appendChild(downloadAnchorNode); // required for firefox
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+	return sc_wardrobe.prototypes.clothes;
+};
+
+
+sc_wardrobe.import_prototypes = function (stored) {
+	for (const idx in stored) {
+		var item = stored[idx];
+		sc_wardrobe.prototypes.clothes[item.name] = new Clothes(item.name, item.size, item.body_area, item.wearing_layer, item.laundry_frequence);
+		sc_wardrobe.prototypes.clothes[item.name].id = item.id;
+		sc_wardrobe.prototypes.clothes[item.name].wearing_img = item.wearing_img;
+		sc_wardrobe.prototypes.clothes[item.name].folded_img = item.folded_img;
+	}
+	return sc_wardrobe.prototypes.clothes;
+};
