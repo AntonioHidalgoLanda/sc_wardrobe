@@ -1,29 +1,11 @@
 var sc_wardrobe = {};
-sc_wardrobe.BODY_AREAS = ["feet","legs","bottom","chest","neck","head"];
-sc_wardrobe.WEARING_LAYER = {"underwear":1 ,"wear":2, "coat":3};
-sc_wardrobe.LAUDRY_FREQUENCIES = { "delicate":14, "iron":7, "no_iron":2};
-sc_wardrobe.WEATHER = {
-	"INDOOR": "Indoor",
-	"HOT": "Hot",
-	"COLD": "Cold",
-	"RAINY": "Rainy",
-	"MIRROR": "Mirror"
-};
-sc_wardrobe.FORMALITY = {
-	"OFFICE": "Office",
-	"TARINING": "Training",
-	"CASUAL": "Casual",
-	"FORMAL": "Formal",
-	"SMART": "Smart",
-	"NAUGTHY":"Naugthy"
-};
 
 class Wearing {
-  constructor() {
-			for (const layer in sc_wardrobe.WEARING_LAYER) {
+	constructor() {
+			for (const layer in Clothes.WEARING_LAYER) {
 				this[layer] = {};
-				for (const n_area in sc_wardrobe.BODY_AREAS) {
-					var area = sc_wardrobe.BODY_AREAS[n_area];
+				for (const n_area in Clothes.BODY_AREAS) {
+					var area = Clothes.BODY_AREAS[n_area];
 					this[layer][area] = [];
 				}
 			}
@@ -32,11 +14,11 @@ class Wearing {
 	get_layer_key(item) {
 		var layer = item.wearing_layer;
 		switch (layer) {
-			case sc_wardrobe.WEARING_LAYER.underwear:
+			case Clothes.WEARING_LAYER.underwear:
 				return "underwear";
-			case sc_wardrobe.WEARING_LAYER.wear:
+			case Clothes.WEARING_LAYER.wear:
 				return "wear";
-			case sc_wardrobe.WEARING_LAYER.coat:
+			case Clothes.WEARING_LAYER.coat:
 				return "coat";
 		}
 		return "";
@@ -71,9 +53,9 @@ class Wearing {
 	}
 	
 	strip_off() {
-		for (const layer in sc_wardrobe.WEARING_LAYER) {
-			for (const n_area in sc_wardrobe.BODY_AREAS) {
-				var area = sc_wardrobe.BODY_AREAS[n_area];
+		for (const layer in Clothes.WEARING_LAYER) {
+			for (const n_area in Clothes.BODY_AREAS) {
+				var area = Clothes.BODY_AREAS[n_area];
 				this[layer][area].length = 0; 
 			}
 		}
@@ -82,9 +64,9 @@ class Wearing {
 	
 	get_clothes() {
 		var all_clothes = [];
-		for (const layer in sc_wardrobe.WEARING_LAYER) {
-			for (const n_area in sc_wardrobe.BODY_AREAS) {
-				var area = sc_wardrobe.BODY_AREAS[n_area];
+		for (const layer in Clothes.WEARING_LAYER) {
+			for (const n_area in Clothes.BODY_AREAS) {
+				var area = Clothes.BODY_AREAS[n_area];
 				for (const item in this[layer][area]) {
 					all_clothes.push(this[layer][area][item]);
 				}
@@ -95,6 +77,9 @@ class Wearing {
 }
 
 class Clothes {
+	static BODY_AREAS = ["feet","legs","bottom","chest","neck","head"];
+	static WEARING_LAYER = {"underwear":1 ,"wear":2, "coat":3};
+	static LAUDRY_FREQUENCIES = { "delicate":14, "iron":7, "no_iron":2};
   constructor(name, size, body_area, wearing_layer, laundry_frequence) {
     this.name = name;
 		this.size = size;
@@ -119,18 +104,18 @@ class Clothes {
 		var info = this.body_area;
 		info += " (" + this.size +" wsp)"; //wardrobe store points
 		switch (this.wearing_layer){
-			case sc_wardrobe.WEARING_LAYER.underwear:
+			case Clothes.WEARING_LAYER.underwear:
 				info += ", underwear";
 				break;
-			case sc_wardrobe.WEARING_LAYER.coat:
+			case Clothes.WEARING_LAYER.coat:
 				info += ", coat";
 				break
 		}
 		switch (this.laundry_frequence){
-			case sc_wardrobe.LAUDRY_FREQUENCIES.delicate:
+			case Clothes.LAUDRY_FREQUENCIES.delicate:
 				info += ", delicate";
 				break;
-			case sc_wardrobe.LAUDRY_FREQUENCIES.no_iron:
+			case Clothes.LAUDRY_FREQUENCIES.no_iron:
 				info += ", no-iron";
 				break
 		}
@@ -262,11 +247,26 @@ class Challenge {
 }
 
 class Occassion {
-  constructor(name, weather) {
-    this.name = name;
+	static WEATHER = {
+		"INDOOR": "Indoor",
+		"HOT": "Hot",
+		"COLD": "Cold",
+		"RAINY": "Rainy",
+		"MIRROR": "Mirror"
+	};
+	static FORMALITY = {
+		"OFFICE": "Office",
+		"TARINING": "Training",
+		"CASUAL": "Casual",
+		"FORMAL": "Formal",
+		"SMART": "Smart",
+		"NAUGTHY":"Naugthy"
+	};
+	constructor(name, weather) {
+		this.name = name;
 		this.weather = weather;
 		this.formality = {};
-  }
+	}
 	add_formality (formality_type, strenght) {
 		this.formality[formality_type] = strenght;
 	}
@@ -282,6 +282,113 @@ class Occassion {
 		console.log("function evaluate not implemented");
 	}
 }
+
+class Repository {
+	constructor() {
+		this.clothes = {};
+		this.occassions = {};
+		this.challenges = {};
+		this.initialize_occasssions();
+		this.initialize_challenges();
+		this.initialize_clothes();
+	}
+	initialize_occasssions(){
+		this.occassions = {
+			"office": new Occassion("office", "indoor"),
+			"gym": new Occassion("gym", "indoor"),
+			"party": new Occassion("party", "indoor"),
+			"mall": new Occassion("mall", "indoor"),
+			"dinner": new Occassion("dinner", "indoor"),
+			"ball": new Occassion("ball", "indoor"),
+			"mall": new Occassion("beach", "indoor"),
+			"mall": new Occassion("park", "indoor"),
+			"mall": new Occassion("pool", "indoor")};
+		return this;
+	}
+	
+	initialize_challenges(){
+		this.challenges = {
+			"working week": new Challenge("working week"),
+			"weekend": new Challenge("weekend")
+		};
+
+		this.challenges["working week"]
+			.add_occassion(this.occassions.office)
+			.add_occassion(this.occassions.office)
+			.add_occassion(this.occassions.office)
+			.add_occassion(this.occassions.office)
+			.add_occassion(this.occassions.office);
+
+		this.challenges["weekend"]
+			.add_occassion(this.occassions.gym)
+			.add_occassion(this.occassions.mall)
+			.add_occassion(this.occassions.party)
+			.add_occassion(this.occassions.beach)
+			.add_occassion(this.occassions.dinner);
+		return this;
+	}
+	initialize_clothes(){
+		var basic_clothes = {};
+		basic_clothes[Clothes.WEARING_LAYER.underwear] = {
+								"feet": ["socks", "tights", "stockings", "Hold-ups"],
+								"bottom": ["brief", "thong"],
+								"chest": ["bra", "bikini-bra", "swimsuit","bralette"]
+							};
+		basic_clothes[Clothes.WEARING_LAYER.wear] = {
+								"feet": ["boots","shoes","wedges","heels","trainers"],
+								"bottom": ["leggings","jeans","skirt","shorts"],
+								"chest": ["tank-top","dress","shirt"]
+							};
+		basic_clothes[Clothes.WEARING_LAYER.coat] = {
+								"chest": ["Jacket","coat"],
+								"neck": ["scarf"],
+								"head": ["hat"]
+							};
+
+		for (const iwl in Clothes.WEARING_LAYER) {
+				for (const iba in Clothes.BODY_AREAS) {
+					var wl = Clothes.WEARING_LAYER[iwl];
+					var ba = Clothes.BODY_AREAS[iba];
+					for (const basic in basic_clothes[wl][ba]) {
+						var basic_name = basic_clothes[wl][ba][basic];
+						this.clothes[basic_name] =  new Clothes(basic_name, 1, ba, wl, Clothes.LAUDRY_FREQUENCIES.iron);
+					}
+				}	
+		}
+		return this;
+	}
+	static export_to_file (json_object, name) {
+		var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(json_object));
+		var downloadAnchorNode = document.createElement('a');
+		downloadAnchorNode.setAttribute("href",     dataStr);
+		downloadAnchorNode.setAttribute("download", name + ".json");
+		document.body.appendChild(downloadAnchorNode); // required for firefox
+		downloadAnchorNode.click();
+		downloadAnchorNode.remove();
+	}
+	
+	export_clothes () {
+		Repository.export_to_file(this.clothes, "collection");
+		return this;
+	};
+
+	import_clothes (stored) {
+		for (const idx in stored) {
+			var item = stored[idx];
+			this.clothes[item.name] = new Clothes(item.name, item.size, item.body_area, item.wearing_layer, item.laundry_frequence);
+			this.clothes[item.name].id = item.id;
+			this.clothes[item.name].wearing_img = item.wearing_img;
+			this.clothes[item.name].folded_img = item.folded_img;
+		}
+		return this.clothes;
+	};
+}
+
+//
+// Proxies
+// Twine has problems accessing directly to the Classes, hence we provide an proxy interface embeded in sc_wardrobe
+//
+sc_wardrobe.prototypes = new Repository();
 
 sc_wardrobe.generate_wardrobe = function (account){
 	account.wardrobe = new Storage();
@@ -314,88 +421,16 @@ sc_wardrobe.generate_occassion = function (name, weather){
 	return occassion;
 };
 
+//
+// Backwards compability
+//
+sc_wardrobe.BODY_AREAS = Clothes.BODY_AREAS;
+sc_wardrobe.WEARING_LAYER = Clothes.WEARING_LAYER;
+sc_wardrobe.LAUDRY_FREQUENCIES = Clothes.LAUDRY_FREQUENCIES;
+sc_wardrobe.WEATHER = Occassion.WEATHER;
+sc_wardrobe.FORMALITY = Occassion.FORMALITY;
 
-// Prototypes and repository
-sc_wardrobe.prototypes = {"clothes":{}, "occassions": {}, "challenges":{}};
-
-sc_wardrobe.prototypes.occassions = {
-	"office": new Occassion("office", "indoor"),
-	"gym": new Occassion("gym", "indoor"),
-	"party": new Occassion("party", "indoor"),
-	"mall": new Occassion("mall", "indoor"),
-	"dinner": new Occassion("dinner", "indoor"),
-	"ball": new Occassion("ball", "indoor"),
-	"mall": new Occassion("beach", "indoor"),
-	"mall": new Occassion("park", "indoor"),
-	"mall": new Occassion("pool", "indoor")
-};
-
-sc_wardrobe.prototypes.challenges = {
-	"working week": new Challenge("working week"),
-	"weekend": new Challenge("weekend")
-};
-
-sc_wardrobe.prototypes.challenges["working week"]
-	.add_occassion(sc_wardrobe.prototypes.occassions.office)
-	.add_occassion(sc_wardrobe.prototypes.occassions.office)
-	.add_occassion(sc_wardrobe.prototypes.occassions.office)
-	.add_occassion(sc_wardrobe.prototypes.occassions.office)
-	.add_occassion(sc_wardrobe.prototypes.occassions.office);
-
-sc_wardrobe.prototypes.challenges["weekend"]
-	.add_occassion(sc_wardrobe.prototypes.occassions.gym)
-	.add_occassion(sc_wardrobe.prototypes.occassions.mall)
-	.add_occassion(sc_wardrobe.prototypes.occassions.party)
-	.add_occassion(sc_wardrobe.prototypes.occassions.beach)
-	.add_occassion(sc_wardrobe.prototypes.occassions.dinner);
-
-var basic_clothes = {};
-basic_clothes[sc_wardrobe.WEARING_LAYER.underwear] = {
-						"feet": ["socks", "tights", "stockings", "Hold-ups"],
-						"bottom": ["brief", "thong"],
-						"chest": ["bra", "bikini-bra", "swimsuit","bralette"]
-					};
-basic_clothes[sc_wardrobe.WEARING_LAYER.wear] = {
-						"feet": ["boots","shoes","wedges","heels","trainers"],
-						"bottom": ["leggings","jeans","skirt","shorts"],
-						"chest": ["tank-top","dress","shirt"]
-					};
-basic_clothes[sc_wardrobe.WEARING_LAYER.coat] = {
-						"chest": ["Jacket","coat"],
-						"neck": ["scarf"],
-						"head": ["hat"]
-					};
-
-for (const iwl in sc_wardrobe.WEARING_LAYER) {
-		for (const iba in sc_wardrobe.BODY_AREAS) {
-			var wl = sc_wardrobe.WEARING_LAYER[iwl];
-			var ba = sc_wardrobe.BODY_AREAS[iba];
-			for (const basic in basic_clothes[wl][ba]) {
-				var basic_name = basic_clothes[wl][ba][basic];
-				sc_wardrobe.prototypes.clothes[basic_name] =  new Clothes(basic_name, 1, ba, wl, sc_wardrobe.LAUDRY_FREQUENCIES.iron);
-			}
-		}	
-}
-
-sc_wardrobe.export_prototypes = function () {
-    var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(sc_wardrobe.prototypes.clothes));
-    var downloadAnchorNode = document.createElement('a');
-    downloadAnchorNode.setAttribute("href",     dataStr);
-    downloadAnchorNode.setAttribute("download", "collection" + ".json");
-    document.body.appendChild(downloadAnchorNode); // required for firefox
-    downloadAnchorNode.click();
-    downloadAnchorNode.remove();
-	return sc_wardrobe.prototypes.clothes;
-};
+sc_wardrobe.export_prototypes = sc_wardrobe.prototypes.export_clothes;
+sc_wardrobe.import_prototypes = sc_wardrobe.prototypes.import_clothes;
 
 
-sc_wardrobe.import_prototypes = function (stored) {
-	for (const idx in stored) {
-		var item = stored[idx];
-		sc_wardrobe.prototypes.clothes[item.name] = new Clothes(item.name, item.size, item.body_area, item.wearing_layer, item.laundry_frequence);
-		sc_wardrobe.prototypes.clothes[item.name].id = item.id;
-		sc_wardrobe.prototypes.clothes[item.name].wearing_img = item.wearing_img;
-		sc_wardrobe.prototypes.clothes[item.name].folded_img = item.folded_img;
-	}
-	return sc_wardrobe.prototypes.clothes;
-};
