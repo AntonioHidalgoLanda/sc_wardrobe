@@ -437,7 +437,7 @@ sc_wardrobe.LAUDRY_FREQUENCIES = Clothes.LAUDRY_FREQUENCIES;
 sc_wardrobe.WEATHER = Occassion.WEATHER;
 sc_wardrobe.FORMALITY = Occassion.FORMALITY;
 
-sc_wardrobe.export_prototypes = sc_wardrobe.prototypes.export_clothes;
-sc_wardrobe.import_prototypes = sc_wardrobe.prototypes.import_clothes;
+sc_wardrobe.export_prototypes = function () {sc_wardrobe.prototypes.export_clothes();};
+sc_wardrobe.import_prototypes = function (store) { return sc_wardrobe.prototypes.import_clothes(store);};
 
 
