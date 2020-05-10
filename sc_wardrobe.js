@@ -82,7 +82,7 @@ class Clothes {
 	static LAUDRY_FREQUENCIES = { "delicate":14, "iron":7, "no_iron":2};
   constructor(name, size, body_area, wearing_layer, laundry_frequence) {
     this.name = name;
-		this.size = size;
+		this.size = Number(size);
 		this.body_area = body_area;
 		this.wearing_layer = wearing_layer;
 		this.laundry_frequence = laundry_frequence;
@@ -174,7 +174,7 @@ class Storage {
 		var index = item.id;
 		if (section.clothes.hasOwnProperty(index)) {
 				delete section.clothes[index];
-				section.size -= item.size;
+				section.size -= Number(item.size);
 				section.size = Math.max(section.size, 0);
 				return true;
     }
@@ -184,10 +184,10 @@ class Storage {
 	store_in(section_id, item) {
 		var section = this.sections[section_id];
 		var index = item.id;
-		if (section.max_size >= section.size + item.size && !section.clothes.hasOwnProperty(index)) {
+		if (section.max_size >= section.size + Number(item.size) && !section.clothes.hasOwnProperty(index)) {
 			this.draw(item);
 			section.clothes[index] = item;
-			section.size += item.size;
+			section.size += Number(item.size);
 			return true
 		}
 		return false;
@@ -437,7 +437,7 @@ sc_wardrobe.LAUDRY_FREQUENCIES = Clothes.LAUDRY_FREQUENCIES;
 sc_wardrobe.WEATHER = Occassion.WEATHER;
 sc_wardrobe.FORMALITY = Occassion.FORMALITY;
 
-sc_wardrobe.export_prototypes = sc_wardrobe.prototypes.export_clothes;
-sc_wardrobe.import_prototypes = sc_wardrobe.prototypes.import_clothes;
+sc_wardrobe.export_prototypes = function () {sc_wardrobe.prototypes.export_clothes();};
+sc_wardrobe.import_prototypes = function (store) { return sc_wardrobe.prototypes.import_clothes(store);};
 
 
