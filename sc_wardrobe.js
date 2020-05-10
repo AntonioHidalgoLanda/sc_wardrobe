@@ -89,12 +89,19 @@ class Clothes {
 		this.id = "" + new Date().getTime() + this.size + this.body_area + this.wearing_layer + this.laundry_frequence;
   }
 	prototype_clone() {
-		return new Clothes(
+		var item= new Clothes(
 			this.name,
 			this.size,
 			this.body_area,
 			this.wearing_layer,
 			this.laundry_frequence);
+		if (this.hasOwnProperty("folded_img")) {
+			item.folded_img = this.folded_img;
+		}
+		if (this.hasOwnProperty("wearing_img")) {
+			item.wearing_img = this.wearing_img;
+		}
+		return item;
 	}
 	
 	get_name() {
