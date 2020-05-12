@@ -13,7 +13,7 @@ class Img_repository {
 	to_selection (filter) {
 		var json = {};
 		for (const id in filter) {
-			json[id] = this.repository[id];
+			json[filter[id]] = this.repository[filter[id]];
 		}
 		return json;
 	}
