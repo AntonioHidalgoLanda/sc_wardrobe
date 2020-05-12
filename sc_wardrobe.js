@@ -1,5 +1,30 @@
 var sc_wardrobe = {};
 
+class Img_repository {
+	constructor() {
+		this.repository = {};
+	}
+	get_img (id) {
+		return this.repository[id];
+	}
+	set_img (id, blob) {
+		this.repository[id] = blob;
+	}
+	to_selection (filter) {
+		var json = {};
+		for (const id in filter) {
+			json[filter[id]] = this.repository[filter[id]];
+		}
+		return json;
+	}
+	load_json (stored) {
+		for (const id in stored) {
+			this.repository[id] = stored[id];
+		}
+		return this;
+	}
+}
+
 class Wearing {
 	constructor() {
 			for (const layer in Clothes.WEARING_LAYER) {
@@ -80,6 +105,8 @@ class Clothes {
 	static BODY_AREAS = ["feet","legs","bottom","chest","neck","head"];
 	static WEARING_LAYER = {"underwear":1 ,"wear":2, "coat":3};
 	static LAUDRY_FREQUENCIES = { "delicate":14, "iron":7, "no_iron":2};
+	static img_repo = new Img_repository();
+
   constructor(name, size, body_area, wearing_layer, laundry_frequence) {
     this.name = name;
 		this.size = Number(size);
@@ -87,6 +114,8 @@ class Clothes {
 		this.wearing_layer = wearing_layer;
 		this.laundry_frequence = laundry_frequence;
 		this.id = "" + new Date().getTime() + this.size + this.body_area + this.wearing_layer + this.laundry_frequence;
+	  	this.folded_img = "folded_" + this.id;
+	  	this.wearing_img = "wearing_" + this.id;
   }
 	prototype_clone() {
 		var item= new Clothes(
@@ -95,17 +124,29 @@ class Clothes {
 			this.body_area,
 			this.wearing_layer,
 			this.laundry_frequence);
-		if (this.hasOwnProperty("folded_img")) {
-			item.folded_img = this.folded_img;
-		}
-		if (this.hasOwnProperty("wearing_img")) {
-			item.wearing_img = this.wearing_img;
-		}
+		item.folded_img = this.folded_img;
+		item.wearing_img = this.wearing_img;
 		return item;
 	}
 	
 	get_name() {
 		return this.name;
+	}
+	get_wearing_img () {
+		return Clothes.img_repo.get_img(this.wearing_img);
+	}
+	get_folded_img () {
+		return Clothes.img_repo.get_img(this.folded_img);
+	}
+	set_wearing_img_blob (blob) {
+		this.wearing_img = "wearing_" + this.id;
+		Clothes.img_repo.set_img(this.wearing_img, blob);
+		return this;
+	}
+	set_folded_img_blob (blob) {
+		this.folded_img = "folded_" + this.id;
+		Clothes.img_repo.set_img(this.folded_img, blob);
+		return this;
 	}
 	get_info() {
 		var info = this.body_area;
@@ -374,14 +415,28 @@ class Repository {
 		downloadAnchorNode.remove();
 	}
 	
+	get_clothes_images () {
+		const filter = [];
+		for (const idx in this.clothes) {
+			if(filter.indexOf(this.clothes[idx].wearing_img) === -1) {
+				filter.push(this.clothes[idx].wearing_img);
+			}
+			if(filter.indexOf(this.clothes[idx].folded_img) === -1) {
+				filter.push(this.clothes[idx].folded_img);
+			}
+		}
+		return Clothes.img_repo.to_selection (filter);
+	}
+	
 	export_clothes () {
-		Repository.export_to_file(this.clothes, "collection");
+		Repository.export_to_file({"clothes": this.clothes, "images": this.get_clothes_images()}, "collection");
 		return this;
 	};
 
 	import_clothes (stored) {
-		for (const idx in stored) {
-			var item = stored[idx];
+		Clothes.img_repo.load_json(stored.images);
+		for (const idx in stored.clothes) {
+			var item = stored.clothes[idx];
 			this.clothes[item.name] = new Clothes(item.name, item.size, item.body_area, item.wearing_layer, item.laundry_frequence);
 			this.clothes[item.name].id = item.id;
 			this.clothes[item.name].wearing_img = item.wearing_img;
@@ -437,7 +492,5 @@ sc_wardrobe.LAUDRY_FREQUENCIES = Clothes.LAUDRY_FREQUENCIES;
 sc_wardrobe.WEATHER = Occassion.WEATHER;
 sc_wardrobe.FORMALITY = Occassion.FORMALITY;
 
-sc_wardrobe.export_prototypes = function () {sc_wardrobe.prototypes.export_clothes();};
-sc_wardrobe.import_prototypes = function (store) { return sc_wardrobe.prototypes.import_clothes(store);};
 
 
