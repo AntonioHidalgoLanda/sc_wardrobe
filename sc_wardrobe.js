@@ -141,10 +141,12 @@ class Clothes {
 	set_wearing_img_blob (blob) {
 		this.wearing_img = "wearing_" + this.id;
 		Clothes.img_repo.set_img(this.wearing_img, blob);
+		return this;
 	}
 	set_folded_img_blob (blob) {
 		this.folded_img = "folded_" + this.id;
-		Clothes.img_repo.get_img(this.folded_img, blob);
+		Clothes.img_repo.set_img(this.folded_img, blob);
+		return this;
 	}
 	get_info() {
 		var info = this.body_area;
