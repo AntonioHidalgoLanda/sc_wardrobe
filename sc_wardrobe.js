@@ -417,10 +417,10 @@ class Repository {
 		const filter = [];
 		for (const idx in this.clothes) {
 			if(filter.indexOf(this.clothes[idx].wearing_img) === -1) {
-				this.items.push(this.clothes[idx].wearing_img);
+				filter.push(this.clothes[idx].wearing_img);
 			}
 			if(filter.indexOf(this.clothes[idx].folded_img) === -1) {
-				this.items.push(this.clothes[idx].folded_img);
+				filter.push(this.clothes[idx].folded_img);
 			}
 		}
 		return Clothes.img_repo.to_json_selection (filter);
