@@ -18,7 +18,7 @@ class Img_repository {
 		return JSON.stringify(json);
 	}
 	load_json (stored) {
-		for (const id in filter) {
+		for (const id in stored) {
 			this.repository[id] = stored[id];
 		}
 		return this;
