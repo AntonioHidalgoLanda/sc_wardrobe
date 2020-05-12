@@ -10,12 +10,12 @@ class Img_repository {
 	set_img (id, blob) {
 		this.repository[id] = blob;
 	}
-	to_json_selection (filter) {
+	to_selection (filter) {
 		var json = {};
 		for (const id in filter) {
 			json[id] = this.repository[id];
 		}
-		return JSON.stringify(json);
+		return json;
 	}
 	load_json (stored) {
 		for (const id in stored) {
@@ -425,7 +425,7 @@ class Repository {
 				filter.push(this.clothes[idx].folded_img);
 			}
 		}
-		return Clothes.img_repo.to_json_selection (filter);
+		return Clothes.img_repo.to_selection (filter);
 	}
 	
 	export_clothes () {
