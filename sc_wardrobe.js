@@ -133,10 +133,10 @@ class Clothes {
 		return this.name;
 	}
 	get_wearing_img () {
-		Clothes.img_repo.get_img(this.wearing_img);
+		return Clothes.img_repo.get_img(this.wearing_img);
 	}
 	get_folded_img () {
-		Clothes.img_repo.get_img(this.folded_img);
+		return Clothes.img_repo.get_img(this.folded_img);
 	}
 	set_wearing_img_blob (blob) {
 		this.wearing_img = "wearing_" + this.id;
