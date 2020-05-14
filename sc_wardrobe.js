@@ -104,8 +104,9 @@ class Wearing {
 		for (const layer in Clothes.WEARING_LAYER) {
 			for (const n_area in Clothes.BODY_AREAS) {
 				var area = Clothes.BODY_AREAS[n_area];
-				if (this[layer][area].includes(item) >= 0)
+				if (this[layer][area].includes(item)){
 					return true;
+				}
 			}
 		}
 		return false;
