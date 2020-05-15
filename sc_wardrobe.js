@@ -264,12 +264,15 @@ class Storage {
 }
 
 class Challenge {
-  constructor(name) {
-    this.occassions = [];
-		this.restricted = {};
-		this.submissions = [];
-		this.name = name;
-  }
+    constructor(name) {
+        this.occassions = [];
+        this.restricted = {};
+        this.submissions = [];
+        this.name = name;
+    }
+	get_current_occassion () {
+		return (occassions.length > 0)? this.occassions[0]: undefined;
+	}
 	add_occassion(occassion) {
 		this.occassions.push(occassion);
 		return this;
