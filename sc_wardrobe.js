@@ -271,7 +271,7 @@ class Challenge {
         this.name = name;
     }
 	get_current_occassion () {
-		return (occassions.length > 0)? this.occassions[0]: undefined;
+		return (this.occassions.length > 0)? this.occassions[0]: undefined;
 	}
 	add_occassion(occassion) {
 		this.occassions.push(occassion);
