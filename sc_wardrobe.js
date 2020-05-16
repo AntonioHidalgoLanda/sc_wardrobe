@@ -465,7 +465,7 @@ class Repository {
 		return this;
 	};
 	
-	import_occassion(store) {
+	import_occassion(stored) {
 		for (const idx in stored) {
 			var item = stored[idx];
 			this.occassions[item.name] = new Occassion(item.name, item.weather);
@@ -478,7 +478,7 @@ class Repository {
 		return this;
 	};
 	
-	import_challenges(store) {
+	import_challenges(stored) {
 		for (const idx in stored) {
 			var item = stored[idx];
 			this.challenges[item.name] = new Challenge(item.name);
