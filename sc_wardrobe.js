@@ -363,9 +363,9 @@ class Repository {
 			"mall": new Occassion("mall", "indoor"),
 			"dinner": new Occassion("dinner", "indoor"),
 			"ball": new Occassion("ball", "indoor"),
-			"mall": new Occassion("beach", "indoor"),
-			"mall": new Occassion("park", "indoor"),
-			"mall": new Occassion("pool", "indoor")};
+			"beach": new Occassion("beach", Occassion.WEATHER.HOT),
+			"park": new Occassion("park", Occassion.WEATHER.HOT),
+			"pool": new Occassion("pool", Occassion.WEATHER.HOT)};
 		return this;
 	}
 	
@@ -458,6 +458,39 @@ class Repository {
 			this.clothes[item.name].folded_img = item.folded_img;
 		}
 		return this.clothes;
+	};
+	
+	export_occassions() {
+		Repository.export_to_file(this.occassions, "occassions");
+		return this;
+	};
+	
+	import_occassion(store) {
+		for (const idx in stored) {
+			var item = stored[idx];
+			this.occassions[item.name] = new Occassion(item.name, item.weather);
+		}
+		return this.occassions;
+	};
+	
+	export_challenges() {
+		Repository.export_to_file(this.challenges, "challenges");
+		return this;
+	};
+	
+	import_challenges(store) {
+		for (const idx in stored) {
+			var item = stored[idx];
+			this.challenges[item.name] = new Challenge(item.name);
+			for (const i_occassion in item.occassions) {
+				var d_occassion = item.occassions[i_occassion];
+				if (!this.occassions.hasOwnProperty(d_occassion.name)) {
+					this.occassions[d_occassion.name] = new Occassion(d_occassion.name, d_occassion.weather);
+				} 
+				this.challenges[item.name].add_occassion(this.occassions[d_occassion.name]);
+			}
+		}
+		return this.challenges;
 	};
 }
 
