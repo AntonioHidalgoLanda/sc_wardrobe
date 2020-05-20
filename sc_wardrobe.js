@@ -363,6 +363,8 @@ class Repository {
 			"mall": new Occassion("mall", "indoor"),
 			"dinner": new Occassion("dinner", "indoor"),
 			"ball": new Occassion("ball", "indoor"),
+			"home": new Occassion("home", "indoor"),
+			"home on summer": new Occassion("home on summer", Occassion.WEATHER.HOT),
 			"beach": new Occassion("beach", Occassion.WEATHER.HOT),
 			"park": new Occassion("park", Occassion.WEATHER.HOT),
 			"pool": new Occassion("pool", Occassion.WEATHER.HOT)};
